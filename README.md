@@ -42,7 +42,7 @@
 <!-- Your community, and what your classifier sorts posts into. Three or four
      sentences. -->
 
-
+This project uses 200 public comments from the Fitness Stack Exchange community. The classifier sorts each comment by its main purpose: evidence-backed `analysis`, a confident unsupported `hot_take`, an immediate `reaction`, or actionable `advice`. The examples come from fitness discussions, where short replies can mix personal experience, opinions, explanations, and recommendations. Each row keeps its source link and license information for traceability.
 
 ---
 
@@ -54,35 +54,51 @@
      The decision rule is worth a point on its own and it's the thing most
      people leave out. Every taxonomy has a hardest boundary. Name yours. -->
 
-### `label_one`
+### `analysis`
 
-**Definition:**
-
-**Example 1:**
->
-
-**Example 2:**
->
-
-### `label_two`
-
-**Definition:**
+**Definition:** A comment that explains or evaluates a fitness claim using a reason, comparison, measurement, or cited evidence.
 
 **Example 1:**
->
+> “@Samuel: there is no exact way to tell for yourself, but various studies and anecdotal evidence suggest ~48 hours is good enough for the average trainee/workout.”
 
 **Example 2:**
->
+> “82 year old guy who has been hill running for decades will generally have more training than someone who never jogged”
+
+### `hot_take`
+
+**Definition:** A confident, broad opinion about fitness that is presented without specific evidence or reasoning to support it.
+
+**Example 1:**
+> “For future readers, don't sacrifice quality for speed. Natural bodybuilding is a hobby of patience.”
+
+**Example 2:**
+> “If sweating made you thin, the American South would not have an obesity epidemic.”
+
+### `reaction`
+
+**Definition:** A brief personal response, feeling, or expression of approval, surprise, humor, or encouragement in the conversation.
+
+**Example 1:**
+> “BTW congrats on the progress. That first 50 pounds, 8-mile walks, and quitting smoking are already tremendous achievements!”
+
+**Example 2:**
+> “i actually enjoy treadmills because they don't let you slow down!”
+
+### `advice`
+
+**Definition:** A comment whose main purpose is to recommend a specific action, choice, or next step.
+
+**Example 1:**
+> “may I suggest focusing more on nutrition for losing weight; and simply enjoy your bike riding.”
+
+**Example 2:**
+> “@Andrew: the whole point of the % of MHR is to work at a specific level. If you are working at less than 55% of your MHR, you should work harder, not put on a hoodie.”
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `analysis` and `advice`
 
-**The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
-
-
+**The decision rule I used every time:** If the comment mainly explains why a fitness claim is true or false, label it `analysis`, even if it mentions an action. If its main point tells someone what to do next, label it `advice`, even if it includes a reason or evidence.
 
 ---
 
@@ -91,19 +107,19 @@
 <!-- Where you collected from, how you labelled, your counts, and three hard
      cases. -->
 
-**Where the posts came from:**
+**Where the posts came from:** 200 public comments from the Fitness Stack Exchange community, collected through the Stack Exchange API from fitness discussions. Each row preserves the comment's source URL, author display name, and the CC BY-SA license version supplied by the API.
 
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:** I labelled the first 15 comments cold and wrote brief reasons for those decisions. I then used AI assistance to label the remaining 185 comments, applying the distinctions in my first 15 labels and explanations. During that review, 85 of the initial draft labels changed; the other 100 were kept. The assisted labels and rationales are recorded in the CSV notes, and they should still be treated as AI-assisted judgments rather than independent human labels.
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `analysis` | 43 | 21.5% |
+| `hot_take` | 24 | 12% |
+| `reaction` | 65 | 32.5% |
+| `advice` | 68 | 34% |
+| **Total** | **200** | **100%** |
 
 **Three hard cases**
 
@@ -111,25 +127,25 @@ Say so plainly — the disclosure is required, not penalised. -->
      been, and what you chose. These are worth more than the easy 190. -->
 
 **1.**
-> *The post:*
+> *The post:* “@Samuel: there is no exact way to tell for yourself, but various studies and anecdotal evidence suggest ~48 hours is good enough for the average trainee/workout. In other words, unless you are moving HUGE weights/volume, working out the same muscles/motions 2-3 days per week on non-consecutive days tends to be ideal.”
 >
-> *Could have been:*
+> *Could have been:* `analysis` or `advice`
 >
-> *I chose, because:*
+> *I chose:* `analysis`, because the comment explains its recommendation with study references and personal evidence. The training schedule is advice, but the explanation is the main point.
 
 **2.**
-> *The post:*
+> *The post:* “For future readers, don't sacrifice quality for speed. Natural bodybuilding is a hobby of patience.”
 >
-> *Could have been:*
+> *Could have been:* `hot_take` or `advice`
 >
-> *I chose, because:*
+> *I chose:* `advice`, because “don't sacrifice quality” directly recommends what readers should do. I changed the original `hot_take` draft label.
 
 **3.**
-> *The post:*
+> *The post:* “Sorry, this is simply wrong. Human metabolism is too complex for the nutritional value of food to be reduced to a simple linear scale like calories. This is strictly anecdotal, but I personally lost more weight on a higher calorie low-carb diet in a couple of months than I did on a lower calorie high-carb diet for over a year.”
 >
-> *Could have been:*
+> *Could have been:* `reaction` or `analysis`
 >
-> *I chose, because:*
+> *I chose:* `analysis`, because after the emotional opening, the comment explains its disagreement and supports it with a personal comparison. I changed the original `reaction` draft label.
 
 ---
 

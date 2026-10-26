@@ -55,7 +55,7 @@ whether you hit them:
 
 Measured as `accuracy` in `results.json`, and it must hold for all three seeds.
 
-**Why this target:** `advice` is my largest label at 35.5% of the 200 posts, so a model that always guesses `advice` already scores about 0.36, and a random guess across four labels scores 0.25. 0.55 means about 17 of the roughly 30 test posts are correct, which is about 20 points better than always guessing `advice`. I didn't set it higher because one test post is worth 3.3 points of accuracy, and my `analysis`/`advice` and `hot_take`/`reaction` boundaries were hard even for me to apply.
+**Why this target:** `advice` is my largest label at 35.5%, so always guessing `advice` already scores about 0.36, and 0.55 (about 17 of the roughly 30 test posts) is a clear step above that without demanding more than my blurry `analysis`/`advice` boundary allows. One test post moves accuracy by 3.3 points, so I left room for seed-to-seed noise.
 
 ---
 
@@ -63,7 +63,7 @@ Measured as `accuracy` in `results.json`, and it must hold for all three seeds.
 
 Measured from `per_label` in `results.json`.
 
-**Why this target:** These are my two largest labels (71 and 69 posts), so each should have about 10 to 11 posts in the test split, which is enough for a fairly stable F1. They also have visible wording cues: `advice` uses phrases like "you should", "I'd suggest" and "see a doctor", and `reaction` comments are often questions, "+1", jokes or ":)". If the model can't reach 0.60 on the labels with the most data and the clearest cues, it hasn't learned my taxonomy.
+**Why this target:** These are my two largest labels (71 and 69 posts, about 10 to 11 each in test), and both have visible wording cues like "you should" for `advice` and questions, "+1" or ":)" for `reaction`. If the model can't reach 0.60 on the labels with the most data and the clearest cues, it hasn't learned my taxonomy.
 
 ---
 
@@ -71,7 +71,7 @@ Measured from `per_label` in `results.json`.
 
 Measured as `f1_macro` in `results.json`.
 
-**Why this target:** Macro F1 weights all four labels equally, so it can't hide the two small ones. `hot_take` has only 17 posts, so the test split will have about 3, and its F1 can only take a handful of values (0, 0.4, 0.67, 1.0). `analysis` has 43 posts, so about 6 to 7 in test. If the model gets 0.65 on `advice` and `reaction`, about 0.45 on `analysis` and never gets a `hot_take` right, macro F1 comes out at about 0.44. So 0.45 means the model has to get at least some `hot_take` posts right, or do clearly better on the other three labels. I didn't set a separate target for `hot_take`, because an F1 based on 3 posts would mostly be measuring which posts the seed happened to put in the test split.
+**Why this target:** `hot_take` is my smallest label with only 17 posts (about 3 in test), so I didn't give it its own F1 target; macro F1 counts it equally instead. A model that never gets a `hot_take` right lands at about 0.44 even with 0.65 on `advice` and `reaction` and 0.45 on `analysis`, so 0.45 means it has to get some of them right.
 
 ---
 
@@ -79,7 +79,7 @@ Measured as `f1_macro` in `results.json`.
 
 Measured from the column totals of the confusion matrix in `results.json`.
 
-**Why this target:** My data is lopsided toward `advice` and `reaction` (together 70% of the posts), while `hot_take` is only 8.5%. With about 140 training posts and 3 epochs, the most likely failure is that the model mostly guesses the two big labels. The test split itself contains about 35% `advice`, so a model that puts more than half its predictions in one label is over-predicting that label by at least 15 points, which shows the imbalance is driving its guesses. This checks balance in the model's output, which is where the imbalance would actually do damage.
+**Why this target:** 70% of my posts are `advice` or `reaction` and only 8.5% are `hot_take`, so the most likely failure with about 140 training posts is a model that keeps guessing the big labels. The test split is only about 35% `advice`, so a single label taking more than half the predictions means the imbalance, not the posts, is driving the guesses.
 
 ---
 
@@ -87,7 +87,7 @@ Measured from the column totals of the confusion matrix in `results.json`.
 
 Measured as `accuracy_most_confident_third` minus `accuracy_least_confident_third` in the `confidence` block of `results.json`.
 
-**Why this target:** Many posts in this dataset mix two purposes, for example an explanation followed by a recommendation, or a joke that also makes a claim. I'd want to use the model's confidence to flag those posts for a human to check, which only works if confidence actually means something. Each third has about 10 posts, so a gap of 0.15 means at least two more correct predictions in the confident third. That's a small but real difference, and it guards against confidence that is high everywhere and therefore tells me nothing.
+**Why this target:** Many of my posts mix two purposes, such as an explanation followed by a recommendation, and I'd want confidence to flag those for a human to check. With about 10 posts per third, 0.15 means at least two more correct predictions in the confident third, a small but real gap.
 
 ---
 

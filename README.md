@@ -109,7 +109,7 @@ This project uses 200 public comments from the Fitness Stack Exchange community.
 
 **Where the posts came from:** 200 public comments from the Fitness Stack Exchange community, collected through the Stack Exchange API from fitness discussions. Each row preserves the comment's source URL, author display name, and the CC BY-SA license version supplied by the API.
 
-**How I labelled them:** I labelled the first 15 comments cold and wrote brief reasons for those decisions. I then used AI assistance to label the remaining 185 comments, applying the distinctions in my first 15 labels and explanations. I proof read the categorization done by AI and have changed 13 labels which were labelled wrong by AI."
+**How I labelled them:** I labelled the first 15 comments cold and wrote brief reasons for those decisions. I then used AI assistance to label the remaining 185 comments, applying the distinctions in my first 15 labels and explanations. I proof read the categorization done by AI and have changed 13 labels which were labelled wrong by AI.
 
 **Counts per label:**
 
@@ -153,17 +153,13 @@ This project uses 200 public comments from the Fitness Stack Exchange community.
 
 <!-- Your starting model, your settings, and anything you changed and why. -->
 
-**Base model:**
+**Base model:** `distilbert-base-uncased`
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Settings:** 3 epochs, learning rate 2e-5, batch size 16, seed 42, max length 128 tokens. Trained on an Apple Silicon GPU (MPS), torch 2.14.1.
 
-**Anything I changed from the defaults, and why:**
+**Anything I changed from the defaults, and why:** Nothing in the training settings. The only change was `LABELS`, which I extended to `["analysis", "hot_take", "reaction", "advice"]` because my taxonomy has a fourth label, `advice`, for comments whose main purpose is recommending an action.
 
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
-
-
+**Split sizes:** 140 train / 30 validation / 30 test (70/15/15, stratified). Test split per label: `advice` 11, `reaction` 10, `analysis` 6, `hot_take` 3. `analysis` and `hot_take` both have fewer than 8 test posts. `hot_take` has only 3, so a single post changes its F1 a lot, and I expect those two labels to swing the most between seeds.
 
 ---
 
@@ -178,17 +174,17 @@ of next unit's variance. -->
 
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* After labelling the first 15 comments cold, I asked Claude Code to check my labelling criteria (the README definitions, `label_definitions.txt` and my 15 cold labels) and label the remaining 185 comments in `labels.csv`, which already had AI draft labels from an earlier pass.
+- *What came back:* It summarised the rules my cold labels follow (for example, personal experience used as evidence counts as `analysis`, and comments about the question itself count as `reaction`) and changed 13 of the 185 draft labels, writing the old label, the new label and the reason into each row's `note`. It also pointed out that `hot_take` had dropped to 17 posts (8.5%), so it would have only about 3 test posts, and it found places where my README examples didn't match my own cold labels.
+- *What I changed:* I kept the 13 changes and had the README counts table updated to 43 / 17 / 69 / 71. I didn't let it change any of my 15 cold labels; those stayed my own calls. Its warning about how small `hot_take` is shaped my criteria: I gave `hot_take` no F1 target of its own and covered it through macro F1 instead.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Five numbered criteria for `criteria.md`, covering at least three of the five areas (accuracy, per-label performance, balance, consistency, confidence).
+- *What came back:* Five targets covering accuracy, per-label F1, macro F1, prediction balance and confidence, each with a reason of three to five sentences tied to my label counts and the roughly 30-post test split.
+- *What I changed:* I checked the draft against the brief, which asks for "a sentence or two" on why each number, and had every reason cut to two sentences. I also had the macro F1 reason rewritten to show its arithmetic (0.65 on `advice` and `reaction`, 0.45 on `analysis` and nothing right on `hot_take` gives about 0.44), so the 0.45 target can be checked rather than taken on trust.
 
-**Pre-labelling disclosure:**
+**Pre-labelling disclosure:** Yes. I labelled rows 1 to 15 myself without AI help (`note` = `cold`). Rows 16 to 200 were pre-labelled by AI. In a first review pass, guided by my 15 cold labels, 85 of those draft labels changed. In a second pass, Claude Code checked them again against my cold-label rules and changed 13 more, and I accepted those changes. Every AI-assisted row says so in its `note`, along with the old and new label wherever one changed and the comment's source link and license. These 185 labels should be read as AI-assisted judgments that I reviewed, not as independent human labels.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 

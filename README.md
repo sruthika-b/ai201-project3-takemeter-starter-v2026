@@ -109,16 +109,16 @@ This project uses 200 public comments from the Fitness Stack Exchange community.
 
 **Where the posts came from:** 200 public comments from the Fitness Stack Exchange community, collected through the Stack Exchange API from fitness discussions. Each row preserves the comment's source URL, author display name, and the CC BY-SA license version supplied by the API.
 
-**How I labelled them:** I labelled the first 15 comments cold and wrote brief reasons for those decisions. I then used AI assistance to label the remaining 185 comments, applying the distinctions in my first 15 labels and explanations. During that review, 85 of the initial draft labels changed; the other 100 were kept. The assisted labels and rationales are recorded in the CSV notes, and they should still be treated as AI-assisted judgments rather than independent human labels.
+**How I labelled them:** I labelled the first 15 comments cold and wrote brief reasons for those decisions. I then used AI assistance to label the remaining 185 comments, applying the distinctions in my first 15 labels and explanations. I proof read the categorization done by AI and have changed 13 labels which were labelled wrong by AI."
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
 | `analysis` | 43 | 21.5% |
-| `hot_take` | 24 | 12% |
-| `reaction` | 65 | 32.5% |
-| `advice` | 68 | 34% |
+| `hot_take` | 17 | 8.5% |
+| `reaction` | 69 | 34.5% |
+| `advice` | 71 | 35.5% |
 | **Total** | **200** | **100%** |
 
 **Three hard cases**

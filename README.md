@@ -195,19 +195,17 @@ This project uses 200 public comments from the Fitness Stack Exchange community.
 
 ## Baseline vs. Trained
 
-<!-- Both models on the same posts. `python baseline.py --trained results.json`
-     prints this table for you. -->
-
 | Measure | Baseline | Trained | Difference |
 |---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Overall accuracy | 0.267 | 0.533 | +0.267 |
+| Macro F1 | 0.193 | 0.319 | +0.126 |
+| F1 — `advice` | 0.000 | 0.611 | +0.611 |
+| F1 — `analysis` | 0.345 | 0.000 | -0.345 |
+| F1 — `hot_take` | 0.000 | 0.000 | +0.000 |
+| F1 — `reaction` | 0.429 | 0.667 | +0.238 |
 
 **What I predicted before I looked:**
-<!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
-     prediction made afterwards isn't one. -->
+I expect the trained model to beat the baseline on accuracy, especially on advice and reaction, my two largest labels, because it learns from my verified 200 labelled Fitness Stack Exchange comments, while the baseline only sees my four label definitions.
 
 **What the gap actually means:**
 <!-- If the baseline matched your trained model, your fine-tuning added

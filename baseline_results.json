@@ -1,0 +1,190 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 30,
+  "seed": 42,
+  "held_out": true,
+  "used_definitions": true,
+  "scores": {
+    "n": 30,
+    "accuracy": 0.26666666666666666,
+    "f1_macro": 0.19334975369458127,
+    "per_label": {
+      "advice": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 11
+      },
+      "analysis": {
+        "precision": 0.21739130434782608,
+        "recall": 0.8333333333333334,
+        "f1": 0.3448275862068966,
+        "support": 6
+      },
+      "hot_take": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      },
+      "reaction": {
+        "precision": 0.75,
+        "recall": 0.3,
+        "f1": 0.4285714285714285,
+        "support": 10
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "I'd answer this by asking, what is the difference between eating a hamburger a day for a year, and eating three hundred hamburgers in a day? Answer: in the second case you explode.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "This is such a delicate question. One wrong recommendation could leave you hurt. Do you have access to, or did your doctor recommend physical therapy? That group is professionally trained to work with persons with all types of physical limitations.",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Have you since got it confirmed by a non-alternative health practitioner?",
+      "gold": "reaction",
+      "predicted": "analysis"
+    },
+    {
+      "text": "IMO you only need to try it to understand why. Your body immediately feels better. Everything is easier when you regularly exercise. It's self-explanatory, really. I find that most people who complain about exercising don't actually exercise much, if at all.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "What is this fresh air and sunshine you speak of, how can us Londoners get some",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "BTW congrats on the progress. That first 50 pounds, 8-mile walks, and quitting smoking are already tremendous achievements!",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "This is a really crappy question... :-p",
+      "gold": "reaction",
+      "predicted": "analysis"
+    },
+    {
+      "text": "I'm voting to close this question as off-topic because it';s about a shopping recommendation.",
+      "gold": "reaction",
+      "predicted": "advice"
+    },
+    {
+      "text": "I would suggest tweaking your question so that it focuses on the factors you look at to judge a shoe, rather than recommending a specific type (which would be a shopping recommendation...) That way others will benefit from the answers as well :-)",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Wait, so you're asking how to beat the pullup world record by five reps? As a beginner? Because you want to train your ten year old brother? I dont even",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "IDK your circumstances, but just FYI, this is a pretty niche machine with pretty low general utility. If this is for a home gym, this would probably be unreasonably expensive/space-consuming. You can do calf raises with much more general equipment (dumbbells, barbells, kettle bells)",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "You need to talk to a medical professional first, and make sure that whatever you start doing, you are healthy enough to do. They can also assist with programs, nutrition, etc.",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "5ft6 and 100lbs indicates a BMI of just over 16 which is pretty badly underweight. Eat.",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "@RussellMcMahon: Because for pulling you have to do deadlifts, rowing, pull-ups etc.",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "You either are superman or you have a very,very bad heart rate monitor...",
+      "gold": "reaction",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Unlike golf and most other sports in which the term yips is used, gymnastics is a sport in which under- (or over-)committing to a move because of disorientation or fear of it, nerves, hesitation etc. is physically dangerous, though the loss of precision often described by the yips clearly matters a lot to both the risk and the points. Some athletics events and many adventure sports share this extra hazard",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "I don't see any problems with your physique at all. You're skinny, but that's it. You've got wide shoulders and a small waist, that's every competitive bodybuilder's dream. The only thing you need to work on is filling in your frame with more muscle.",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "And, of course, that positioning is extremely important because just a quarter to a half of a twist difference is the difference between landing on your feet and landing on your head, c.f. Elena Mukhina and her failed Thomas salto.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "This answer on sports.se says they weigh about 1kg each. They have some bulk but will be denser than water, at least once wet through. Still, they won't pull you under",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "I'm guessing that he doesn't like the color green",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "@xiahouzi79 I don't agree. Assume all else equal, as in a scientific experiment. If someone eats Meals A, B & C of certain calorie content, and then timeshifts his schedule so that he's eating same meals later at night, closer to when he's about to sleep, will he gain \"excess\" weight? I think that's a perfectly coherent question.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "@JimmyJamessupportsCanada - Don't cherry pick to be alarmist. This is from the section prefaced with \"The mechanisms underlying increased coronary atherosclerosis in athletes are largely unknown, but there are several potential pathways, although speculative, that may link exercise training to CAC and plaque development\" - Translated - We don't know what causes this but here's a bunch of spaghetti to throw at the wall in future studies.",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "LOL, how about not caring that your ex will be there at all. Just saying...",
+      "gold": "advice",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Don't waste the money. You're getting results without it, it's overpriced, you don't really need a recovery drink, and if you do then you can get it cheaper elsewhere.",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Unless it's a specific situation, the most likely scenario is that you'll get wet, because the water will be shallow enough to stand up in, for any place that has a multiuse path or similar next to the water.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "The purpose of this board, as I understand it, is to provide information which is higher quality than the typical website. In other words, we try to reference actual scientific studies here. I looked up the menshealth article, and they mention the journal of strength and conditioning, but they don't provide a citation. It is impossible to know what study they are referring to. I would challenge @Hemant to dive into the research literature and come back with some actual citations.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "See also Tips for improving my pedal stroke and Correct way to pedal on bicycles SE.",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "+1 \"the problem isn't that you're lazy. Most of us are. But we work out anyway.\" I rarely look forward to going to the gym (Except for chest day!), but once I'm there I enjoy my time and I then can be lazy. :D",
+      "gold": "reaction",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Swimming comes to mind, because you don't 'need' your legs for it and its a great arm exercise.",
+      "gold": "advice",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Well, what happens if your boat sinks while you are on your boat this far out?",
+      "gold": "reaction",
+      "predicted": "analysis"
+    }
+  ]
+}

@@ -208,43 +208,39 @@ This project uses 200 public comments from the Fitness Stack Exchange community.
 I expect the trained model to beat the baseline on accuracy, especially on advice and reaction, my two largest labels, because it learns from my verified 200 labelled Fitness Stack Exchange comments, while the baseline only sees my four label definitions.
 
 **What the gap actually means:**
-<!-- If the baseline matched your trained model, your fine-tuning added
-     nothing — and that is a real finding, not a failure. Say it plainly. -->
+Fine-tuning helped, but only a little. The trained model got 16 of 30 posts right against the baseline's 8, but it predicted advice for 25 of the 30 posts and reaction for the other 5, and never predicted analysis or hot_take. Always guessing advice would already score 0.367, so fine-tuning added only 5 correct posts beyond that, all of them reaction comments.
 
+The baseline failed the opposite way: it never predicted advice and called 23 of the 30 posts analysis. That's why it's the only model with any analysis F1 (0.345).
 
+So my prediction was half right. The trained model beat the baseline on accuracy, advice and reaction, but mostly by learning that those are my two biggest labels, not by learning to tell all four apart. Neither model learned analysis or hot_take, which have only 6 and 3 test posts.
 
 ---
 
 ## Run Log — Before
 
-<!-- Five criteria across three seeds. The notebook's section 6 prints the
-     spread table; the Target and Verdict columns are yours. -->
-
-| Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
-|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.533 | 0.433 | 0.500 | 0.100 |
+| Macro F1 | 0.319 | 0.239 | 0.299 | 0.081 |
+| F1 — `analysis` | 0.000 | 0.000 | 0.000 | 0.000 |
+| F1 — `hot_take` | 0.000 | 0.000 | 0.000 | 0.000 |
+| F1 — `reaction` | 0.667 | 0.400 | 0.625 | 0.267 |
+| F1 — `advice` | 0.611 | 0.556 | 0.571 | 0.056 |
 
 ### Confusion matrix
 
-<!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
-     An image of a matrix earns nothing. -->
-
-| true \ predicted |  |  |  |
-|---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| true \ predicted | analysis | hot_take | reaction | advice |
+|---|---|---|---|---|
+| **analysis** | 0 | 0 | 0 | 6 |
+| **hot_take** | 0 | 0 | 0 | 3 |
+| **reaction** | 0 | 0 | 5 | 5 |
+| **advice** | 0 | 0 | 0 | 11 |
 
 **My biggest off-diagonal number, and what it means:**
 <!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
      direction. "7 real analysis posts were called hot_take and only 3 went the
      other way" is a direction, not just an error rate. -->
-
-
+All 6 real analysis posts were called advice, and none went the other way. The same 6 → advice appears on all three seeds. This is the boundary I named as my hardest, analysis vs advice, and the model didn't learn it at all: it treats advice as the default for anything that isn't clearly a reaction. The cause is probably partly the data, because many of my analysis comments also contain recommendation wording ("you should", "focus on"), and partly the imbalance, because advice is my largest label, so guessing it is the cheapest way for the model to lower its loss. The same thing happens to hot_take (3 of 3 → advice) and to half of reaction (5 of 10 → advice).
 
 ---
 
@@ -284,7 +280,7 @@ I expect the trained model to beat the baseline on accuracy, especially on advic
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+**Agreement rate:** 29 / 30 = 97%
 
 <!-- Nobody grades this number. A 60% who argues every disagreement from the
      stated rules beats a 95% who wrote "staff was right" nine times. Several
@@ -306,27 +302,17 @@ I expect the trained model to beat the baseline on accuracy, especially on advic
      written rule two different ways on 30 posts, that is direct evidence about
      what you did across your own 200. -->
 
-**1.**
-> *The post:*
+**1.**|
+> *The post:* I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar one. Small sample, one runner, but it's consistent enough that I've stopped scheduling hard days after late shifts.
 >
-> *Staff said / I said:*
+> *Staff said / I said:* `analysis`/`hot_take`
 >
-> *My call, and why:*
+> *My call, and why:* This post was based on personal analysis and not based on any established facts or analysis, and the author stopped scheduling hard days after late shifts, which is a personal behvioral change for his own analysis and findings, therefore I felt that, this post is a hot take rather than an analysis.
 >
-> *Which pile:*
-
-**2.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
+> *Which pile:* (c)
 
 **What the pattern in my disagreements tells me:**
-
-
+This is a borderline case where the statement can fit in both analysis and hot_take category, but I feel like I could rate personal takes based on thorough analysis could also be considered as 'analysis' category.
 
 ---
 

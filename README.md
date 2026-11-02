@@ -186,6 +186,11 @@ This project uses 200 public comments from the Fitness Stack Exchange community.
 
 **Pre-labelling disclosure:** Yes. I labelled rows 1 to 15 myself without AI help (`note` = `cold`). Rows 16 to 200 were pre-labelled by AI. In a first review pass, guided by my 15 cold labels, 85 of those draft labels changed. In a second pass, Claude Code checked them again against my cold-label rules and changed 13 more, and I accepted those changes. Every AI-assisted row says so in its `note`, along with the old and new label wherever one changed and the comment's source link and license. These 185 labels should be read as AI-assisted judgments that I reviewed, not as independent human labels.
 
+**Moment 3**
+- *What I asked for:* Can you explain what each criteria means in depth and how can we improve each criteria and the list of debugging techniques for each.
+- *What came back:* Detailed explanation of all the criteria and techniques to improve them.
+- *What I changed:* This helped me in deciding the best move to take forward for the model improvement.
+
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
      Don't fill these in during unit 5.
@@ -268,8 +273,15 @@ All 6 real analysis posts were called advice, and none went the other way. The s
      have that can tell a LABELLING problem from a MODEL problem, and this
      section is graded on whether you used it that way. -->
 
+All four misses come from the same pattern on my labels.csv model: it predicts advice for 24–25 of the 30 test posts on every seed, sometimes reaction, and never analysis or hot_take.
 
+1. Accuracy (missed on all seeds): a task the model can't reach from this much data, made worse by imbalance. My 200 posts split into about 140 for training. With batch size 16 and 3 epochs, that's only about 27 weight updates in total, and the model's mean confidence is about 0.35, barely above the 0.25 of an even four-way guess. It barely moved from its starting point and fell back on my most common label (advice, 35.5% of labels.csv). Always guessing advice would score 0.367, and the model only beats that by picking up some reaction posts.
 
+2. advice and reaction F1 (missed on seeds 7 and 2024): a side effect of the same collapse. advice has perfect recall but low precision (about 0.44 on seed 42), because analysis, hot_take and half of reaction all get sent there. reaction precision is high (1.0 on seed 42) but recall depends on the split (3 to 5 of 10 found), which is why its F1 moved 27 points between seeds. These are my two largest labels (71 and 69 posts) with the clearest wording cues, so the issue isn't too few examples. The model hasn't been trained enough to use those cues for anything but the most obvious reaction posts.
+
+3. Macro F1 (missed on all seeds): too few examples, plus a genuinely hard label pair. analysis has about 30 training posts and hot_take only about 12, and both scored 0.000 F1 on every seed. All 6 analysis test posts went to advice on every seed, which is the analysis/advice boundary I named as my hardest. In labels.csv, 10 of my 43 analysis posts (23%) contain recommendation wording such as "should", "try" or "focus on", against 47 of 71 advice posts (66%). So the wording does overlap, but most analysis posts don't look like advice on the surface. That points more to too few analysis examples than to the pair being impossible to separate. My agreement report (29/30 with staff) suggests I apply a written rule consistently, so I don't think inconsistent labelling is the main cause. Two caveats: the staff set has no advice label, so it can't test this boundary, and rows 16–200 of labels.csv were AI-pre-labelled and then reviewed.
+
+4. Prediction balance (missed on all seeds): lopsided data and an undertrained model. 70% of my posts are advice or reaction, and only 8.5% are hot_take. advice received 80–83% of predictions on every seed. Fixing this needs more training so the small labels actually get learned, or class weighting, so that mistakes on analysis and hot_take cost more during training.
 ---
 
 ## Agreement Report
@@ -289,19 +301,6 @@ All 6 real analysis posts were called advice, and none went the other way. The s
 
 **Disagreements**
 
-<!-- Three lines each: the post, both labels, and who you think is right and
-     why — grounded in the staff definitions you were both applying.
-
-     Then sort each into one of three piles:
-       (a) the rule covered it and I applied it loosely → a consistency problem
-       (b) the rule genuinely doesn't say               → a gap in the definitions
-       (c) the rule is ambiguous here and my reading is defensible → argue it.
-           This is a legitimate win.
-
-     Pile (a) is the one that matters most for your diagnosis: if you applied a
-     written rule two different ways on 30 posts, that is direct evidence about
-     what you did across your own 200. -->
-
 **1.**|
 > *The post:* I tracked sleep against session quality for eleven weeks. Under seven hours the next day's intervals were 6-8 seconds per mile slower, every time bar one. Small sample, one runner, but it's consistent enough that I've stopped scheduling hard days after late shifts.
 >
@@ -318,39 +317,60 @@ This is a borderline case where the statement can fit in both analysis and hot_t
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** I raised EPOCHS from 3 to 10 in the notebook's settings cell. Nothing else changed: learning rate 2e-5, batch size 16, max length 128, the same labels.csv, and the same three seeds (42, 7, 2024), so the before and after runs compare directly.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** My diagnosis for criterion 1 found that the model was undertrained, not mislabelled. With about 140 training posts and batch size 16, 3 epochs gave only about 27 weight updates. Mean confidence was about 0.35, barely above a four-way guess, and the model predicted advice for 80–83% of posts while never predicting analysis or hot_take. My 29/30 agreement with staff gave no evidence of a boundary I'd applied two ways, so relabelling wasn't justified. Even analysis, with about 30 training posts, scored 0, so adding more examples wasn't the first fix either. The model needed more training on the data it already had.
 
 ### Run Log — After
 
-| Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
-|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.800 | 0.600 | 0.700 | 0.200 |
+| Macro F1 | 0.630 | 0.452 | 0.509 | 0.178 |
+| F1 — `analysis` | 0.833 | 0.500 | 0.444 | 0.389 |
+| F1 — `hot_take` | 0.000 | 0.000 | 0.000 | 0.000 |
+| F1 — `reaction` | 0.870 | 0.667 | 0.870 | 0.203 |
+| F1 — `advice` | 0.818 | 0.643 | 0.720 | 0.175 |
+
+### Criterion table - after
+| # | Criterion | Target | Verdict | How I decided |
+|---|---|---|---|---|
+| 1 | Overall accuracy on the held-out test split | ≥ 0.55 on every seed | MET | 0.800 / 0.600 / 0.700 across seeds 42 / 7 / 2024 which is above 0.55 on all three |
+| 2 | `advice` and `reaction` F1 | ≥ 0.60 each, on every seed | MET | `advice` 0.818 / 0.643 / 0.720, `reaction` 0.870 / 0.667 / 0.870 (all the seeds are above 0.60) |
+| 3 | Macro F1 | ≥ 0.45 on every seed | MET | 0.630 / 0.452 / 0.509, (seed 7 is only 0.002 above the target) |
+| 4 | No single label gets more than 50% of test predictions | ≤ 50% on every seed | MISSED | `advice` received 13 / 17 / 14 of 30 predictions (43% / 57% / 47%), from the confusion-matrix column totals - missed on seed 7 |
+| 5 | Most-confident third beats least-confident third by at least 0.15 accuracy | Gap ≥ 0.15 on every seed | MISSED | 1.00 − 0.80 = 0.20, 0.60 − 0.50 = 0.10, 1.00 − 0.50 = 0.50, missed on seed 7 |
 
 **Did it help, and how do I know:**
 
-<!-- If it didn't, say so. Relabelling that didn't help is a genuinely
-     interesting result and earns full credit. -->
+Yes, on three of the five criteria, and on all three seeds rather than just a lucky one. Raising EPOCHS from 3 to 10 took accuracy from 0.533 / 0.433 / 0.500 to 0.800 / 0.600 / 0.700, and macro F1 from 0.319 / 0.239 / 0.299 to 0.630 / 0.452 / 0.509. Criteria 1, 2 and 3 went from MISSED to MET. The clearest sign the model actually learned rather than just guessing differently is analysis: it scored 0.000 F1 on every seed before and 0.833 / 0.500 / 0.444 after, because the model now predicts analysis at all. It also stopped defaulting to advice, which fell from 80–83% of predictions to 37–57%.
 
-
+| true \ predicted | analysis | hot_take | reaction | advice |
+|---|---|---|---|---|
+| **analysis** | 5 | 0 | 1 | 0 |
+| **hot_take** | 0 | 0 | 1 | 2 |
+| **reaction** | 0 | 0 | 10 | 0 |
+| **advice** | 1 | 0 | 1 | 9 |
 
 ---
 
 ## What's Still Broken
 
-<!-- For each criterion still missed: what you'd do, and why you stopped. -->
-
-
+- hot_take is still 0.000 on every seed, and the model never predicts it. With about 12 training posts, more epochs wasn't enough. That supports the diagnosis that this label has too few examples, which is the fix to try next.
+- Seed 7 is the weak split each time. It caused both misses and the near-miss on macro F1.
+- Accuracy now swings 20 points across seeds, double the 10-point warning line. - That's the small test set showing up: 30 posts at 3.3 points each.
+- Confidence went up but is still modest: about 0.58 when the model is right against 0.51 when it's wrong. It was about 0.35 before.
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
-<!-- Two sentences. Your confusion matrix is the evidence. -->
+I meant my labels to capture what a comment is trying to do and whether it supports it. The model mostly learned wording instead: "you should" means advice, questions and jokes mean reaction, and explanations mean analysis. hot_take shows the gap most clearly. It is defined by evidence that is missing, which isn't visible in the words, so all 3 hot_take posts were misread (2 as advice, 1 as reaction), and the model never predicted hot_take once. That 2 (hot_take → advice) is the biggest off-diagonal number. Elsewhere the model does well: reaction 10 of 10, advice 9 of 11, analysis 5 of 6. My hardest boundary, analysis/advice, now has only 1 error in each direction, so on this split it learned that boundary, but not the difference between a supported claim and an unsupported one.
 
+| true \ predicted | analysis | hot_take | reaction | advice |
+|---|---|---|---|---|
+| **analysis** | 5 | 0 | 1 | 0 |
+| **hot_take** | 0 | 0 | 1 | 2 |
+| **reaction** | 0 | 0 | 10 | 0 |
+| **advice** | 1 | 0 | 1 | 9 |
 
 
 <!-- ═════════════════════════════════════════════════════════════════════

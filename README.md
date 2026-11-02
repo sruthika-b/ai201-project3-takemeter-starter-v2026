@@ -251,11 +251,11 @@ All 6 real analysis posts were called advice, and none went the other way. The s
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Overall accuracy on the held-out test split | ≥ 0.55 on every seed | MISSED | 0.533 / 0.433 / 0.500 across seeds 42 / 7 / 2024 which is below 0.55 on all three |
+| 2 | `advice` and `reaction` F1 | ≥ 0.60 each, on every seed | MISSED | `advice` 0.611 / 0.556 / 0.571 (under 0.60 on seeds 7 and 2024); `reaction` 0.667 / 0.400 / 0.625 (under 0.60 on seed 7) |
+| 3 | Macro F1 | ≥ 0.45 on every seed | MISSED | 0.319 / 0.239 / 0.299; `analysis` and `hot_take` scored 0.000 on every seed, which caps macro F1 |
+| 4 | No single label gets more than 50% of test predictions | ≤ 50% on every seed | MISSED | `advice` received 25 / 25 / 24 of 30 predictions (83% / 83% / 80%), from the confusion-matrix column totals |
+| 5 | Most-confident third beats least-confident third by at least 0.15 accuracy | Gap ≥ 0.15 on every seed | MET | 0.70 − 0.30 = 0.40, 0.50 − 0.20 = 0.30, 0.70 − 0.30 = 0.40; but mean confidence is only about 0.35, barely above the 0.25 of an even four-way guess |
 
 **Diagnoses**
 
